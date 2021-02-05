@@ -1,3 +1,5 @@
 .idea/
 out/
 IljaSudoku.iml
+generatedPuzzles/
+generatedSolutions/

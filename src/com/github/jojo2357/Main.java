@@ -72,36 +72,42 @@ public class Main {
             {0,0,0,1,0},
     };*/
 
-    public static void main(String...args){
+    public static void main(String...args) throws InterruptedException {
         int[] windexes = new int[10];
         gb = new GameBoard(vals, comparisons).solve();
         int tries = 0;
-        while (!winnableWithOne()){
-        //while (!gb.solved()){
-            if (tries++ % 1000 == 0)
-                System.out.println(tries - 1);
+        //while (!winnableWithOne()){
+        for (int f = 0; f < 100; f++) {
+            do {
+                //while (!gb.solved()){
+                if (tries++ % 1000 == 0) System.out.println(tries - 1);
             /*recalculate(windexes, 0);
             for (int i = 0; i < 10; i++) {
                 if (windexes[i] == 0)
                     break;
 
             }*/
-            reset();
-            for (int i = 0; i < 10; i++){
-                int windex = rd.nextInt(60);
-                int x, y;
-                x = 2 * (windex / 11);
-                x = x + (windex % 11 >= 5 ? 1 : 0);
-                y = windex % 11 - (windex % 11 >= 5 ? 5 : 0);
-                comparisons[x][y] = rd.nextInt(2) * 2 - 1;//0 => -1 and 1 => 1
-            }
-            try {
-                //gb = new GameBoard(vals, comparisons).solve();
-            }catch (Exception ignored){//IOOBE
+                reset();
+                for (int i = 0; i < 20; i++) {
+                    int windex = rd.nextInt(60);
+                    int x, y;
+                    x = 2 * (windex / 11);
+                    x = x + (windex % 11 >= 5 ? 1 : 0);
+                    y = windex % 11 - (windex % 11 >= 5 ? 5 : 0);
+                    comparisons[x][y] = rd.nextInt(2) * 2 - 1;//0 => -1 and 1 => 1
+                }
+                try {
+                    //gb = new GameBoard(vals, comparisons).solve();
+                } catch (Exception ignored) {//IOOBE
 
-            }
+                }
+            } while (!winnableWithNone());
+            //System.out.println(gb);
+            gb.solve();
+            gb.outputBoard("Unsolved_" + f, false);
+            gb.outputBoard("Solved_" + f, true);
         }
-        System.out.println(gb);
+        //Thread.sleep(5000);
         System.out.println("got it in " + tries + " tries");
         /*winnableWithOne();
         GameBoard gb = new GameBoard(vals, comparisons).solve();
@@ -141,8 +147,11 @@ public class Main {
     }
 
     private static boolean winnableWithNone(){
-        gb = new GameBoard(vals, comparisons);
-        return gb.solve().solved();
+        try {
+            gb = new GameBoard(vals, comparisons);
+            return gb.solve().solved();
+        }catch (Exception ignored){}
+        return false;
     }
 
     private static boolean winnableWithOne(){
