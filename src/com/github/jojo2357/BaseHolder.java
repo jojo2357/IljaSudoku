@@ -10,7 +10,7 @@ public abstract class BaseHolder {
 
     public boolean hasValue(int val) {
         for (Square square : squares) {
-            if (square != null && square.val == val) return true;
+            if (square != null && square.val != null && square.val == val) return true;
         }
         return false;
     }
@@ -28,4 +28,11 @@ public abstract class BaseHolder {
     }*/
 
     abstract Square getSquare(int index);
+
+    public int indexOf(Square other){
+        for (int i = 0; i < 6; i++)
+            if (squares[i] == other)
+                return i;
+        return -1;
+    }
 }

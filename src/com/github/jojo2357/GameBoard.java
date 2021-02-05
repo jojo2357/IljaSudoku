@@ -42,10 +42,14 @@ public class GameBoard {
         return this;
     }
 
-    private boolean solved() {
+    public boolean solved() {
         for (Row row : rows) {
             if (!row.isSolved()) return false;
         }
+        for (Column column : columns)
+            if (!column.isSolved()) return false;
+        for (Box box : boxes)
+            if (!box.isSolved()) return false;
         return true;
     }
 

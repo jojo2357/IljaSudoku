@@ -109,8 +109,6 @@ public class Square {
             }
         }
         if (val == null){
-            if (loc == 32)
-                System.out.print("");
             Box queryBox;
             if (row.squares[5].box == box)
                 queryBox = row.squares[0].box;
@@ -129,6 +127,40 @@ public class Square {
                 if (upRowCan ^ downRowCan){
 
                     acceptedNumbers[i] = (amIUp != upRowCan);
+                }
+            }
+            Box queryBox1, queryBox2;
+            if (column.squares[1].box == box) {
+                queryBox1 = column.squares[3].box;
+                queryBox2 = column.squares[5].box;
+            }else if (column.squares[3].box == box){
+                queryBox1 = column.squares[1].box;
+                queryBox2 = column.squares[5].box;
+            }else{
+                queryBox1 = column.squares[1].box;
+                queryBox2 = column.squares[3].box;
+            }
+            int mydex = box.indexOf(this) % 3;
+            for (int i = 0; i < 6; i++){
+                if (!acceptedNumbers[i])
+                    continue;
+                boolean leftColCan = false;
+                boolean middleColCan = false;
+                boolean rightColCan = false;
+                for (int j = 0; j < 2; j++){
+                    leftColCan |= queryBox1.squares[3 * j].acceptedNumbers[i];
+                    middleColCan |= queryBox1.squares[1 + 3 * j].acceptedNumbers[i];
+                    rightColCan |= queryBox1.squares[2 + 3 * j].acceptedNumbers[i];
+                    leftColCan |= queryBox2.squares[3 * j].acceptedNumbers[i];
+                    middleColCan |= queryBox2.squares[1 + 3 * j].acceptedNumbers[i];
+                    rightColCan |= queryBox2.squares[2 + 3 * j].acceptedNumbers[i];
+                }
+                if (leftColCan && !middleColCan && !rightColCan){
+                    acceptedNumbers[i] = (mydex != 0);
+                }else if (!leftColCan && middleColCan && !rightColCan){
+                    acceptedNumbers[i] = (mydex != 1);
+                }else if (!leftColCan && !middleColCan && rightColCan){
+                    acceptedNumbers[i] = (mydex != 2);
                 }
             }
         }
