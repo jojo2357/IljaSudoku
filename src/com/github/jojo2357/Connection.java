@@ -18,4 +18,8 @@ public class Connection {
             return tile1;
         throw new IllegalStateException("Thats wrong the input doesnt own this connection");
     }
+
+    public boolean isObeyed(){
+        return biggerTile.val != null && other(biggerTile).val != null && biggerTile.val > other(biggerTile).val;
+    }
 }

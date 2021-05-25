@@ -5,7 +5,7 @@ import com.github.jojo2357.util.Texture;
 public class FontCharacter {
     public final Texture image;
 
-    public FontCharacter(char strRepresentation) {
+    public FontCharacter(String strRepresentation) {
         this.image = new Texture("fontassets/" + strRepresentation);
     }
 }

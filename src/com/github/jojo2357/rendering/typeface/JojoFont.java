@@ -1,9 +1,11 @@
 package com.github.jojo2357.rendering.typeface;
 
+import com.github.jojo2357.Main;
+
 public class JojoFont {
     private static boolean inited = false;
 
-    private static final FontCharacter[] fontCharacters = new FontCharacter[6];
+    private static final FontCharacter[] fontCharacters = new FontCharacter[Main.boardSize];
 
     public static void init() {
         if (inited)
@@ -13,17 +15,17 @@ public class JojoFont {
     }
 
     public static void loadNumbers() {
-        for (char asciiValue = 1; asciiValue <= 6; asciiValue++) {
-            fontCharacters[asciiValue - 1] = new FontCharacter((char)(asciiValue + 48));
+        for (int asciiValue = 1; asciiValue <= Main.boardSize; asciiValue++) {
+            fontCharacters[asciiValue - 1] = new FontCharacter("" + asciiValue);
         }
     }
 
-    public static FontCharacter getCharacter(char charRepresentation, Colors color) {
-        if (charRepresentation <= '6' && charRepresentation >= '1')
-            if (fontCharacters[charRepresentation - 49] == null)
+    public static FontCharacter getCharacter(int charRepresentation, Colors color) {
+        if (charRepresentation <= fontCharacters.length && charRepresentation >= 1)
+            if (fontCharacters[charRepresentation - 1] == null)
                 throw new IllegalStateException("Probs wrong color. " + charRepresentation + "_" + color.name + " DNE");
             else
-                return fontCharacters[charRepresentation - 49];
+                return fontCharacters[charRepresentation - 1];
         throw new IndexOutOfBoundsException("font type for " + charRepresentation + "_" + color.name + " not found");
     }
 }

@@ -1,5 +1,6 @@
 package com.github.jojo2357.rendering;
 
+import com.github.jojo2357.Main;
 import com.github.jojo2357.rendering.typeface.Colors;
 import com.github.jojo2357.util.Dimensions;
 import com.github.jojo2357.util.Point;
@@ -25,7 +26,7 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class ScreenManager {
-    public static final Dimensions windowSize = new Dimensions(32 * 6, 32 * 6);
+    public static final Dimensions windowSize = new Dimensions(32 * Main.boardSize, 32 * Main.boardSize);
     private static final boolean hide = true;
     private static final Point lastPosition = new Point(0, 0);
     private static final double[] x = new double[1];
@@ -53,38 +54,30 @@ public class ScreenManager {
 
         if (window == NULL) throw new RuntimeException("Failed to create the GLFW window");
 
-        glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-            }
-        });
-
         try (MemoryStack stack = stackPush()) {
             IntBuffer pWidth = stack.mallocInt(1); // int*
             IntBuffer pHeight = stack.mallocInt(1); // int*
             glfwGetWindowSize(window, pWidth, pHeight);
-            GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-            glfwSetWindowPos(window, (vidmode.width() - pWidth.get(0)) / 2, (vidmode.height() - pHeight.get(0)) / 2);
+            //GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+            //glfwSetWindowPos(window, (vidmode.width() - pWidth.get(0)) / 2, (vidmode.height() - pHeight.get(0)) / 2);
         } // the stack frame is popped automatically
 
-        glfwSetScrollCallback(window, new GLFWScrollCallback() {
-            @Override
-            public void invoke(long window, double xoffset, double yoffset) {
-                doMouseWheel(yoffset);
-            }
-        });
-
-        if (hide) {
-            glfwHideWindow(window);
-        } else {
-            glfwShowWindow(window);
-        }
+        setVisible(hide);
         glfwMakeContextCurrent(window);
         GL.createCapabilities();
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glViewport(0, 0, windowSize.getWidth(), windowSize.getHeight());
+    }
+
+    public static void setVisible(boolean visible){
+        if (visible) {
+            glfwHideWindow(window);
+        } else {
+            glfwShowWindow(window);
+        }
     }
 
     private static void doMouseWheel(double vel) {
