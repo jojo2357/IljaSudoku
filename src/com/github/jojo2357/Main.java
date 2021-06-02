@@ -20,7 +20,7 @@ public class Main {
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
     };*/
     private static int recordDepth = 0;
-    public static final int boardSize = 25;
+    public static final int boardSize = 36;
     //private static int[][] vals = new int[][]{ };
     private static int[][] comparisons = new int[boardSize * 2 - 1][boardSize];
     /*private static int[][] comparisons = new int[][]{
@@ -101,8 +101,6 @@ public class Main {
             { 1, 1, 0, 0, -1},
     };*/
 
-    private static int[] pickdex = new int[boardSize * boardSize];
-
     public static void main(String... args) throws InterruptedException {
         int total = 0;
         for (int[] line : comparisons)
@@ -127,14 +125,6 @@ public class Main {
             int f = 0;
             while (true) {
                 System.out.println("Solving");
-                pickdex = new int[boardSize * boardSize];
-                Arrays.fill(pickdex, -1);
-                for (int i = 0; i < boardSize * boardSize; i++){
-                    int filldex = rd.nextInt(boardSize * boardSize);
-                    while (pickdex[filldex] != -1)
-                        filldex = rd.nextInt(boardSize * boardSize);
-                    pickdex[filldex] = i;
-                }
                 if (!recursiveGuessingNumbers(new int[boardSize][boardSize], new int[boardSize * 2 - 1][boardSize], new GameBoard(new int[boardSize][boardSize], new int[2 * boardSize - 1][boardSize]))) {
                     System.out.println("Something went wrong");
                 }
@@ -644,7 +634,7 @@ public class Main {
 
     private enum Difficulties {
         EASY_NO_NUMS("Easy", 20, 0),
-        EASY_ONE_NUM("Easy", 2000, 300);
+        EASY_ONE_NUM("Easy", 900000, 6);
 
         public final String NAME;
         public final int DIFFICULTY;
